@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YKS Pomodoro & Sayaç</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="background-animation"></div>
+
+    <!-- User Profile Header -->
+    <div class="top-bar">
+        <div id="user-profile" class="hidden">
+            <span id="welcome-message">Hoşgeldin, <span id="username-display"></span></span>
+            <button id="settings-btn" class="icon-btn" title="Ayarlar"><i class="fa-solid fa-gear"></i></button>
+            <button id="logout-btn" class="icon-btn" title="Çıkış Yap"><i
+                    class="fa-solid fa-right-from-bracket"></i></button>
+        </div>
+    </div>
+
+    <div class="container" id="main-app" class="hidden">
+        <!-- Başlık -->
+        <header>
+            <h1><i class="fa-solid fa-graduation-cap"></i> YKS 2026 Yolculuğu</h1>
+            <p class="subtitle">Hedefine Giden Yolda Zamanı Verimli Kullan</p>
+        </header>
+
+        <!-- YKS Geri Sayım -->
+        <section class="glass-panel countdown-section">
+            <h2>YKS'ye Kalan Süre</h2>
+            <div id="countdown" class="countdown-grid">
+                <div class="time-box">
+                    <span id="days" class="time-value">00</span>
+                    <span class="time-label">Gün</span>
+                </div>
+                <div class="time-box">
+                    <span id="hours" class="time-value">00</span>
+                    <span class="time-label">Saat</span>
+                </div>
+                <div class="time-box">
+                    <span id="minutes" class="time-value">00</span>
+                    <span class="time-label">Dakika</span>
+                </div>
+                <div class="time-box">
+                    <span id="seconds" class="time-value">00</span>
+                    <span class="time-label">Saniye</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pomodoro -->
+        <main class="glass-panel pomodoro-section">
+            <div class="modes">
+                <button class="mode-btn active" data-mode="pomodoro">Pomodoro</button>
+                <button class="mode-btn" data-mode="shortBreak">Kısa Mola</button>
+                <button class="mode-btn" data-mode="longBreak">Uzun Mola</button>
+            </div>
+
+            <div class="timer-display">
+                <span id="time">25:00</span>
+            </div>
+
+            <div class="controls">
+                <button id="start-btn" class="control-btn primary"><i class="fa-solid fa-play"></i> Başlat</button>
+                <button id="pause-btn" class="control-btn secondary disabled"><i class="fa-solid fa-pause"></i>
+                    Durdur</button>
+                <button id="reset-btn" class="control-btn danger"><i class="fa-solid fa-rotate-right"></i>
+                    Sıfırla</button>
+            </div>
+        </main>
+
+        <!-- Motivasyon Sözü -->
+        <footer class="glass-panel quote-section">
+            <i class="fa-solid fa-quote-left quote-icon"></i>
+            <p id="quote-text">Başarı, hazırlık ve fırsatın karşılaştığı yerdir.</p>
+            <i class="fa-solid fa-quote-right quote-icon"></i>
+        </footer>
+    </div>
+
+    <!-- Auth Modal Overlay -->
+    <div id="auth-modal" class="modal-overlay">
+        <div class="glass-panel modal-content">
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-target="login-form">Giriş Yap</button>
+                <button class="auth-tab" data-target="register-form">Kayıt Ol</button>
+            </div>
+
+            <form id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label for="login-username">Kullanıcı Adı</label>
+                    <input type="text" id="login-username" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Şifre</label>
+                    <input type="password" id="login-password" required autocomplete="current-password">
+                </div>
+                <div id="login-error" class="error-message"></div>
+                <button type="submit" class="control-btn primary full-width">Giriş Yap</button>
+            </form>
+
+            <form id="register-form" class="auth-form">
+                <div class="form-group">
+                    <label for="register-username">Kayıt Kullanıcı Adı</label>
+                    <input type="text" id="register-username" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Kayıt Şifre</label>
+                    <input type="password" id="register-password" required autocomplete="new-password">
+                </div>
+                <div id="register-error" class="error-message"></div>
+                <div id="register-success" class="success-message"></div>
+                <button type="submit" class="control-btn primary full-width">Kayıt Ol</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Settings Modal Overlay -->
+    <div id="settings-modal" class="modal-overlay hidden">
+        <div class="glass-panel modal-content">
+            <div class="modal-header">
+                <h2>Ayarlar</h2>
+                <button id="close-settings" class="icon-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="settings-form">
+                <div class="settings-grid">
+                    <div class="form-group">
+                        <label for="setting-pomodoro">Pomodoro (dk)</label>
+                        <input type="number" id="setting-pomodoro" min="1" max="90" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="setting-shortBreak">Kısa Mola (dk)</label>
+                        <input type="number" id="setting-shortBreak" min="1" max="30" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="setting-longBreak">Uzun Mola (dk)</label>
+                        <input type="number" id="setting-longBreak" min="1" max="60" required>
+                    </div>
+                </div>
+                <button type="submit" class="control-btn primary full-width">Kaydet</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
